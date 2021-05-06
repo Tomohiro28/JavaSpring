@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- クラス指定 -->
+<mapper namespace="com.example.demo.Repository.UserMapper2">
+	<!-- type=クラス名 id=SQLを紐づけるための名前 -->
+	<resultMap type="com.exmple.demo.models.User" id="user">
+		<!-- column=カラム名 property=Javeクラスのフィールド名 -->
+		<id column="user_id" property="userId"/>
+		<!-- result 指定されたカラムの値が異なってもインスタンス作られない -->
+		<result column="password" property="password"/>
+		<result column="user_name" property="userName"/>
+		<result column="birthday" property="birthday"/>
+		<result column="age" property="age"/>
+		<result column="marriage" property="marriage"/>
+		<result column="role" property="role"/>
+	</resultMap>
+	<!-- メソッドとの紐付け idにJavaのメソッド名-->
+	<!-- parameterType　メソッドから渡されたパラメーターをSQLに渡す -->
+	<insert id="insert" parameterType="com.exmple.demo.models.User">
+		INSERT INTO m_user(
+			user_id,
+			password,
+			user_name,
+			birthday,
+			age,
+			marriage,
+			role)
+		VALUES(
+			#{userId},
+			#{password},
+			#{userName},
+			#{birthday},
+			#{age},
+			#{marriage},
+			#{role})
+	</insert>
+	<!-- resultType SQLの結果を受け取る -->
+	<select id="selectOne" parameterType="string" resultType="com.exmple.demo.models.User">
+		SELECT
+			user_id,
+			password,
+			user_name,
+			birthday,
+			age,
+			marriage,
+			role
+		FROM
+			m_user
+		WHERE
+			user_id = #{userId}
+	</select>
+	<select id="selectMany" resultMap="user">
+        SELECT
+            user_id,
+            password,
+            user_name,
+            birthday,
+            age,
+            marriage,
+            role
+        FROM
+            m_user
+    </select>
+
+	<update id="updateOne" parameterType="com.exmple.demo.models.User">
+		UPDATE m_user
+			SET
+			password = #{password},
+			user_name = #{userName},
+			birthday = #{birthday},
+			age = #{age},
+			marriage = #{marriage}
+		WHERE user_id = #{userId}
+	</update>
+	<delete id="deleteOne" parameterType="string">
+		DELETE FROM m_user WHERE user_id = #{userId}
+	</delete>
+</mapper>
